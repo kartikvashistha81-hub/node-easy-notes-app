@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EasyNotes</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+    <header class="app-header">
+        <h1>&#128221; EasyNotes</h1>
+        <p class="subtitle">Organise and search your notes</p>
+    </header>
+
+    <section class="toolbar">
+        <input id="search-input" type="search" placeholder="Search title or content..." />
+
+        <select id="category-filter">
+            <option value="">All categories</option>
+        </select>
+
+        <select id="tags-match">
+            <option value="any">Match any tag</option>
+            <option value="all">Match all tags</option>
+        </select>
+
+        <select id="sort-select">
+            <option value="createdAt:desc">Newest first</option>
+            <option value="createdAt:asc">Oldest first</option>
+            <option value="title:asc">Title A-Z</option>
+            <option value="title:desc">Title Z-A</option>
+            <option value="updatedAt:desc">Recently updated</option>
+        </select>
+
+        <button id="clear-filters-btn" type="button">Clear filters</button>
+    </section>
+
+    <section id="tag-chip-bar" class="tag-chip-bar" aria-label="Filter by tag"></section>
+
+    <main class="layout">
+        <section class="note-form-panel">
+            <h2 id="form-title">New Note</h2>
+            <form id="note-form">
+                <input type="hidden" id="note-id" />
+
+                <label for="title-input">Title</label>
+                <input id="title-input" type="text" placeholder="Untitled Note" />
+
+                <label for="content-input">Content *</label>
+                <textarea id="content-input" rows="5" required></textarea>
+
+                <label for="category-input">Category</label>
+                <input id="category-input" type="text" placeholder="e.g. Work" list="category-suggestions" />
+                <datalist id="category-suggestions"></datalist>
+
+                <label for="tags-input">Tags (comma separated)</label>
+                <input id="tags-input" type="text" placeholder="e.g. urgent, ideas" />
+
+                <div class="form-actions">
+                    <button type="submit" id="save-btn">Save Note</button>
+                    <button type="button" id="cancel-edit-btn" class="secondary" hidden>Cancel</button>
+                </div>
+                <p id="form-error" class="form-error" role="alert"></p>
+            </form>
+        </section>
+
+        <section class="note-list-panel">
+            <div class="note-list-header">
+                <span id="result-count"></span>
+            </div>
+            <div id="note-list" class="note-list"></div>
+            <p id="empty-state" class="empty-state" hidden>No notes match your search/filters.</p>
+        </section>
+    </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

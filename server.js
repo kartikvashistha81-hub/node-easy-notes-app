@@ -1,3 +1,6 @@
+require('dotenv').config();
+
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -10,6 +13,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse application/json
 app.use(bodyParser.json())
 
+// Serve the search & filter UI (public/index.html, app.js, style.css).
+// Express automatically serves public/index.html for GET /.
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
@@ -17,23 +24,23 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-mongoose.connect(dbConfig.url, {
-	useNewUrlParser: true
-}).then(() => {
+mongoose.connect(dbConfig.url).then(() =>  {
     console.log("Successfully connected to the database");    
 }).catch(err => {
     console.log('Could not connect to the database. Exiting now...', err);
     process.exit();
 });
 
-// define a simple route
-app.get('/', (req, res) => {
+// API welcome/info route (moved from '/' to '/api' now that '/' serves the
+// static frontend's index.html).
+app.get('/api', (req, res) => {
     res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."});
 });
 
 require('./app/routes/note.routes.js')(app);
 
 // listen for requests
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
 });
